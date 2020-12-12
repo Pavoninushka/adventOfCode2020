@@ -12,20 +12,15 @@ let task = data
         };
     });
 
-
-// FBFBBFF 44
-// FBFBBFB 45
-
-
 const calculateId = (ticket) => {
-    let left = 63
-    let right = 127
+    let left = 0;
+    let right = 127;
 
     for (let rowLetter of ticket.row) {
         if (rowLetter === "F") {
-            right = (right + left) / 2;
+            right = Math.floor((right + left) / 2);
         } else {
-            left = (right + left) / 2;
+            left = Math.ceil((right + left) / 2);
         }
     }
 
