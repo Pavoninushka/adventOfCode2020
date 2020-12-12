@@ -1,4 +1,3 @@
-//каждая строка это аррей и каждая буква элемент аррея
 let fs = require('fs');
 
 let file = fs.readFileSync('Day3Input.txt', 'utf8');
