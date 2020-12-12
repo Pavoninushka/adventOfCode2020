@@ -1,6 +1,6 @@
 let fs = require('fs');
 
-let file = fs.readFileSync('Day3Input.txt', 'utf8');
+let file = fs.readFileSync('Day5Input.txt', 'utf8');
 let data = file.toString();
 
 let task = data
@@ -28,6 +28,22 @@ const calculateId = (ticket) => {
             left = (right + left) / 2;
         }
     }
+
+    let row = left;
+
+    left = 0;
+    right = 7;
+
+    for (let columnLetter of ticket.column) {
+        if (columnLetter === "L") {
+            right = Math.floor((right + left) / 2);
+        } else {
+            left = Math.ceil((right + left) / 2);
+        }
+    }
+
+    let column = left;
+    return row * 8 + column;
 }
 
 const part1 = () => {
@@ -35,3 +51,5 @@ const part1 = () => {
         return calculateId(item);
     }))
 }
+
+console.log(`part 1 solution: ${part1()}`);
