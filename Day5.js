@@ -48,3 +48,15 @@ const part1 = () => {
 }
 
 console.log(`part 1 solution: ${part1()}`);
+
+const part2 = () => {
+    let idSet = task.map(item => calculateId(item));
+    idSet.sort((a, b) => a - b);
+    for (let i = 1; i < idSet.length; i++) {
+        if (idSet[i] !== idSet[i - 1] + 1) {
+            return idSet[i - 1] + 1;
+        }
+    }
+};
+
+console.log(`part 2 solution: ${part2()}`);
