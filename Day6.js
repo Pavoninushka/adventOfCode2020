@@ -37,6 +37,13 @@ const part1 = () => {
 
 console.log(`part 1 solution: ${part1()}`);
 
+const intersection = (string1, string2) => {
+    let array1 = string1.split("");
+    let array2 = string2.split("");
+    let resultArray = array1.filter(item => array2.includes(item));
+    return resultArray.join('');
+}
+
 const numberOfYesPart2 = (group) => {
     if (group.length === 1) {
         return group[0].length;
