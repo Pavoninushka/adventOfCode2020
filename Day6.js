@@ -13,7 +13,7 @@ const processLine = (line) => {
     return groups
 };
 
-const numberOfYes = (group) => {
+const numberOfYesPart1 = (group) => {
     let result = [];
 
     for (let member of group) {
@@ -30,9 +30,31 @@ const part1 = () => {
     let sumOfAnswers = 0;
     let groups = processLine(data);
     for (let group of groups) {
-        sumOfAnswers += numberOfYes(group);
+        sumOfAnswers += numberOfYesPart1(group);
     }
     return sumOfAnswers;
 }
 
 console.log(`part 1 solution: ${part1()}`);
+
+const numberOfYesPart2 = (group) => {
+    if (group.length === 1) {
+        return group[0].length;
+    }
+    let lastMember = group.pop();
+    let secondToLastMember = group.pop();
+    let oneIntersection = intersection(lastMember, secondToLastMember);
+    group.push(oneIntersection);
+    return numberOfYesPart2(group);
+};
+
+const part2 = () => {
+    let sumOfAnswers = 0;
+    let groups = processLine(data);
+    for (let group of groups) {
+        sumOfAnswers += numberOfYesPart2(group);
+    }
+    return sumOfAnswers;
+}
+
+console.log(`part 2 solution: ${part2()}`);
