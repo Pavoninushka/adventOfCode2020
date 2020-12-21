@@ -3,7 +3,7 @@ let fs = require('fs');
 let file = fs.readFileSync('Day7Input.txt', 'utf8');
 let data = file.toString();
 
-const processData = (task) => {
+const processDataPart1 = (task) => {
     let parents = new Map();
 
     for (let line of task.split("\n")) {
@@ -21,7 +21,7 @@ const processData = (task) => {
 }
 
 const part1 = () => {
-    let parents = processData(data);
+    let parents = processDataPart1(data);
     let result = [];
     let candidates = [...parents.get("shiny gold")];
 
@@ -38,3 +38,36 @@ const part1 = () => {
 }
 
 console.log(`part 1 solution: ${part1()}`);
+
+const processDataPart2 = (task) => {
+    let parents = new Map();
+
+    for (let line of task.split("\n")) {
+        let [parent, ...children] = line.match(/^[a-z]+ [a-z]+|\d+ [a-z]+ [a-z]+(?= bag)/g);
+        parents.set(parent, children.map(child => {
+            let [quantity, color] = child.match(/^\d+|[a-z]+ [a-z]+/g);
+            return {
+                quantity: Number(quantity),
+                color: color
+            };
+        }));
+    }
+    return parents;
+};
+
+const countPack = (color, map) => {
+    let result = 0;
+
+    for (let child of map.get(color)) {
+        result += child.quantity;
+        result += countPack(child.color, map) * child.quantity;
+    }
+    return result;
+};
+
+const part2 = () => {
+    let parents = processDataPart2(data);
+    return countPack("shiny gold", parents);
+};
+
+console.log(`part 2 solution: ${part2()}`);
