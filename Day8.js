@@ -14,7 +14,7 @@ let task = data
 
 //console.log(task);
 
-const part1 = () => {
+const run = () => {
     let accumulator = 0;
     let seenOperations = [];
 
@@ -22,7 +22,7 @@ const part1 = () => {
         if (!seenOperations.includes(i)) {
             seenOperations.push(i);
         } else {
-            return accumulator;
+            return [false, accumulator];
         }
         if (task[i].operation === "jmp" ) {
             i += task[i].argument - 1;
@@ -34,7 +34,39 @@ const part1 = () => {
             throw new Error(`unknown operation: ${task[i].operation}`);
         }
     }
-    throw new Error("finite loop");
+
+    return [true, accumulator];
+};
+
+const part1 = () => {
+    let [status, accumulator] = run();
+    return accumulator;
 };
 
 console.log(`part 1 solution: ${part1()}`);
+
+const isChangeable = (instruction) => {
+    return instruction.operation === "jmp" || instruction.operation === "nop";
+};
+
+const change = (instruction) => {
+    if (instruction.operation === "jmp") {
+        instruction.operation = "nop";
+    } else if (instruction.operation === "nop") {
+        instruction.operation = "jmp";
+    }
+};
+
+const part2 = () => {
+    for (let instruction of task) {
+        if (isChangeable(instruction)) {
+            change(instruction);
+            let [status, accumulator] = run();
+            if (status) return accumulator;
+            change(instruction);  // revert
+        }
+    }
+    throw new Error("Cant find Broken Instruction");
+};
+
+console.log(`part 2 solution: ${part2()}`);
