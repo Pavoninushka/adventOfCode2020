@@ -29,4 +29,28 @@ const part1 = () => {
     throw new Error("No such number");
 };
 
-console.log(`part 1 solution: ${part1()}`);
+let resultOfPart1 = part1();
+console.log(`part 1 solution: ${resultOfPart1}`);
+
+function sumOfNumbers(array) {
+    let result = 0;
+    for (let item of array) {
+        result += item;
+    }
+    return result;
+}
+
+const part2 = () => {
+    let range = [];
+    for (let number of task) {
+        range.push(number);
+        while (sumOfNumbers(range) > resultOfPart1) {
+            range.shift();
+        }
+        if (sumOfNumbers(range) === resultOfPart1) {
+            return Math.min(...range) + Math.max(...range);
+        }
+    }
+}
+
+console.log(`part 2 solution: ${part2()}`);
