@@ -37,7 +37,27 @@ const countOccupiedAdjacent = (i, j, matrix) => {
     return result;
 }
 
-const nextState = (matrix) => {
+const countOccupiedVisible = (i, j, matrix) => {
+    let result = 0;
+    for (let [shiftI, shiftJ] of SHIFTS) {
+        let newI = i + shiftI;
+        let newJ = j + shiftJ;
+        while (newI >= 0 && newI < matrix.length && newJ >= 0 && newJ < matrix[0].length) {
+            if (matrix[newI][newJ] === "#") {
+                result++;
+                break;
+            } else if (matrix[newI][newJ] === "L") {
+                break;
+            } else {
+                newI += shiftI;
+                newJ += shiftJ;
+            }
+        }
+    }
+    return result;
+};
+
+const nextState = (matrix, count, numberOccupiedSeats) => {
     let newState = [];
     for (let i = 0; i < matrix.length; i++) {
         let newRow = [];
@@ -45,9 +65,9 @@ const nextState = (matrix) => {
             let currentState = matrix[i][j];
             let nextState = currentState;
 
-            if (currentState === "L" && countOccupiedAdjacent(i, j, matrix) === 0) {
+            if (currentState === "L" && count(i, j, matrix) === 0) {
                 nextState = "#";
-            } else if (currentState === "#" && countOccupiedAdjacent(i, j, matrix) >= 4) {
+            } else if (currentState === "#" && count(i, j, matrix) >= numberOccupiedSeats) {
                 nextState = "L";
             }
             newRow.push(nextState);
@@ -81,17 +101,13 @@ const countOccupied = (matrix) => {
 }
 
 const part1 = () => {
-    let currentMatrix = processData(data);
-
-    while (true) {
-        let nextMatrix = nextState(currentMatrix);
-        if (isEqualMatrix(currentMatrix, nextMatrix)) {
-            break;
-        }
-        currentMatrix = nextMatrix;
-    }
-    return countOccupied(currentMatrix);
+    return part1Part2(countOccupiedAdjacent,4);
 }
 
 console.log(`part 1 solution: ${part1()}`);
 
+const part2 = () => {
+    return part1Part2(countOccupiedVisible,5);
+}
+
+console.log(`part 2 solution: ${part2()}`);
