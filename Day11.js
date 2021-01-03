@@ -100,6 +100,19 @@ const countOccupied = (matrix) => {
     return sumOfOccupied;
 }
 
+const part1Part2 = (count, numberOccupiedSeats) => {
+    let currentMatrix = processData(data);
+
+    while (true) {
+        let nextMatrix = nextState(currentMatrix, count, numberOccupiedSeats);
+        if (isEqualMatrix(currentMatrix, nextMatrix)) {
+            break;
+        }
+        currentMatrix = nextMatrix;
+    }
+    return countOccupied(currentMatrix);
+}
+
 const part1 = () => {
     return part1Part2(countOccupiedAdjacent,4);
 }
